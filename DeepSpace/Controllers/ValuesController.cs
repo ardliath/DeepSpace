@@ -20,7 +20,7 @@ namespace DeepSpace.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return "new value";
         }
 
         // POST api/values
