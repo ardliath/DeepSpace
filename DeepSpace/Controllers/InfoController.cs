@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DeepSpace.Controllers
 {
+    [Route("api/[controller]")]
     public class InfoController : Controller
     {
         // GET api/values
