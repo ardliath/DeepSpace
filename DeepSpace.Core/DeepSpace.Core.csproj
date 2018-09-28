@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DeepSpace.Contracts\DeepSpace.Contracts.csproj" />
+    <ProjectReference Include="..\DeepSpace.Data\DeepSpace.Data.csproj" />
+  </ItemGroup>
+
 </Project>
