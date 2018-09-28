@@ -2,30 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DeepSpace.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeepSpace.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[Action]")]
     public class ShipController : Controller
     {
-        // GET api/values
+        // GET api/ship/details
         [HttpGet]
+        [ActionName("Details")]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        //// GET api/values/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "PR new value";
-        //}
+        // GET api/ship/details/5
+        [HttpGet("{id}")]
+        [ActionName("Details")]
+        public string Get(int id)
+        {
+            return $"ID was {id}";
+        }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] Data value)
+        // POST api/ship/create
+        [HttpPost]        
+        [ActionName("Create")]
+        public void Post([FromBody] Ship value)
         {
         }
 
@@ -40,10 +44,5 @@ namespace DeepSpace.Controllers
         //public void Delete(int id)
         //{
         //}
-    }
-
-    public class Data
-    {
-        public string name { get; set; }
     }
 }

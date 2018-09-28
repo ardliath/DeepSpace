@@ -27,8 +27,8 @@ namespace TestApp
                     //var response = await client.PostAsync("http://localhost:51530/api/ship", new StringContent("{name: Adam}", Encoding.UTF8, "application/json"));
                     //var text = response.EnsureSuccessStatusCode();
 
-                    StringContent content = new StringContent(JsonConvert.SerializeObject(new Data { name = "Adam" }), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("http://localhost:51530/api/ship", content);
+                    StringContent content = new StringContent("{name: 'Adam'}", Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("http://localhost:51530/api/ship/create", content);
                     if (response.IsSuccessStatusCode)
                     {
                         string data = await response.Content.ReadAsStringAsync();
@@ -41,10 +41,5 @@ namespace TestApp
                 Console.Write(ex.Message);
             }
         }
-    }
-
-        public class Data
-        {
-            public string name { get; set; }
-        }    
+    }   
 }
