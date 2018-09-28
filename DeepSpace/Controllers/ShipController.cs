@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DeepSpace.Contracts;
+using DeepSpace.Messages;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeepSpace.Controllers
@@ -29,8 +30,13 @@ namespace DeepSpace.Controllers
         // POST api/ship/create
         [HttpPost]        
         [ActionName("Create")]
-        public void Post([FromBody] Ship value)
+        public CreateShipResponse Post([FromBody] CreateShipRequest value)
         {
+            return new CreateShipResponse
+            {
+                Name = value.Name,
+                CommandCode = Guid.NewGuid().ToString()
+            };
         }
 
         //// PUT api/values/5

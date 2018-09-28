@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DeepSpace.Contracts\DeepSpace.Contracts.csproj" />
+    <ProjectReference Include="..\DeepSpace.Core\DeepSpace.Core.csproj" />
   </ItemGroup>
 
 </Project>
