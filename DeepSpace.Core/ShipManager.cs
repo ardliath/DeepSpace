@@ -13,7 +13,7 @@ namespace DeepSpace.Core
                 Name = name,
                 CommandCode = Guid.NewGuid().ToString(),
                 TransponderCode = Guid.NewGuid().ToString(),
-                Location = new Location
+                Location = new Location // this would be better at semi-random coordinates
                 {
                     X = 0,
                     Y = 0,
