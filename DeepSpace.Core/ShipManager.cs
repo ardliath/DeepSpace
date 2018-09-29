@@ -11,7 +11,13 @@ namespace DeepSpace.Core
             {
                 Name = name,
                 CommandCode = Guid.NewGuid().ToString(),
-                TransponderCode = Guid.NewGuid().ToString()
+                TransponderCode = Guid.NewGuid().ToString(),
+                Location = new Location
+                {
+                    X = 0,
+                    Y = 0,
+                    Z = 0
+                }
             };
 
             return ship;

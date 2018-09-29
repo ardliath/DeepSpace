@@ -38,7 +38,13 @@ namespace DeepSpace.Controllers
             {
                 Name = ship.Name,
                 CommandCode = ship.CommandCode,
-                TransponderCode = ship.TransponderCode
+                TransponderCode = ship.TransponderCode,
+                Location = new LocationRequestOrResponse
+                {
+                    X = ship.Location.X,
+                    Y = ship.Location.Y,
+                    Z = ship.Location.Z
+                }
             };
 
             return response;

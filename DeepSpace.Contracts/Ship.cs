@@ -5,5 +5,7 @@
         public string Name { get; set; }
         public string CommandCode { get; set; }
         public string TransponderCode { get; set; }
+
+        public Location Location { get; set; }
     }    
 }
