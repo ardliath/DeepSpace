@@ -51,10 +51,12 @@ namespace DeepSpace.Controllers
 
                 return response;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.Error.WriteLine($"{ex.Message} - {ex.StackTrace}");
-                throw;
+                return new CreateShipResponse
+                {
+                    Name = $"{ex.Message} - {ex.StackTrace}"  // let's not even start talking about why this is a bad idea!
+                };
             }
         }
 
