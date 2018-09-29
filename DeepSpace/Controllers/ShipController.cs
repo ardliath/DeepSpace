@@ -53,7 +53,7 @@ namespace DeepSpace.Controllers
             }
             catch(Exception ex)
             {
-                Console.WriteLine($"{ex.Message} - {ex.StackTrace}");
+                Console.Error.WriteLine($"{ex.Message} - {ex.StackTrace}");
                 throw;
             }
         }
