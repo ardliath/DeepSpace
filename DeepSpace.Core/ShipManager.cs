@@ -1,12 +1,13 @@
 ﻿using DeepSpace.Contracts;
 using DeepSpace.Data;
 using System;
+using System.Threading.Tasks;
 
 namespace DeepSpace.Core
 {
     public class ShipManager : IShipManager
     {
-        public Ship CreateShip(string name)
+        public async Task<Ship> CreateShipAsync(string name)
         {
             var ship = new Ship
             {
@@ -21,7 +22,7 @@ namespace DeepSpace.Core
                 }
             };
 
-            new ShipDataAccess().InsertShipAsync(ship);
+            await new ShipDataAccess().InsertShipAsync(ship);
             return ship;
         }
     }

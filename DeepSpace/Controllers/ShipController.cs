@@ -31,23 +31,31 @@ namespace DeepSpace.Controllers
         // POST api/ship/create
         [HttpPost]        
         [ActionName("Create")]
-        public CreateShipResponse Post([FromBody] CreateShipRequest value)
+        public async Task<CreateShipResponse> Post([FromBody] CreateShipRequest value)
         {
-            var ship = new ShipManager().CreateShip(value.Name);
-            var response = new CreateShipResponse
+            try
             {
-                Name = ship.Name,
-                CommandCode = ship.CommandCode,
-                TransponderCode = ship.TransponderCode,
-                Location = new LocationRequestOrResponse
+                var ship = await new ShipManager().CreateShipAsync(value.Name);
+                var response = new CreateShipResponse
                 {
-                    X = ship.Location.X,
-                    Y = ship.Location.Y,
-                    Z = ship.Location.Z
-                }
-            };
+                    Name = ship.Name,
+                    CommandCode = ship.CommandCode,
+                    TransponderCode = ship.TransponderCode,
+                    Location = new LocationRequestOrResponse
+                    {
+                        X = ship.Location.X,
+                        Y = ship.Location.Y,
+                        Z = ship.Location.Z
+                    }
+                };
 
-            return response;
+                return response;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"{ex.Message} - {ex.StackTrace}");
+                throw;
+            }
         }
 
         //// PUT api/values/5
