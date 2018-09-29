@@ -1,4 +1,5 @@
 ﻿using DeepSpace.Contracts;
+using DeepSpace.Data;
 using System;
 
 namespace DeepSpace.Core
@@ -20,6 +21,7 @@ namespace DeepSpace.Core
                 }
             };
 
+            new ShipDataAccess().InsertShipAsync(ship);
             return ship;
         }
     }
