@@ -10,12 +10,18 @@ namespace DeepSpace.Data
     {
         public async void InsertShipAsync(Ship ship)
         {            
-            var url = ConfigurationManager.AppSettings["DatabaseEndpoint"];
-            var key = ConfigurationManager.AppSettings["DatabaseKey"];
-            using (var client = new DocumentClient(new Uri(url), key))
+            
+            using (var client = CreateDocumentClient())
             {
                 Document shipResponse = await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri("DeepSpace", "Entities"), ship);
             }
+        }
+
+        private DocumentClient CreateDocumentClient()
+        {
+            var url = ConfigurationManager.AppSettings["DatabaseEndpoint"];
+            var key = ConfigurationManager.AppSettings["DatabaseKey"];
+            return new DocumentClient(new Uri(url), key);
         }
     }
 }
