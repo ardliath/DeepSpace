@@ -6,6 +6,6 @@ namespace DeepSpace.Contracts
 {
     public interface IShipManager
     {
-        Ship CreateShip(string name);
+        //Ship CreateShip(string name);
     }
 }
