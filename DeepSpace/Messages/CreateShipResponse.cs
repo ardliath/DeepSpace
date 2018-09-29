@@ -10,5 +10,11 @@ namespace DeepSpace.Messages
     {
         [JsonProperty(PropertyName = "commandCode")]
         public string CommandCode { get; set; }
+
+        [JsonProperty(PropertyName = "transponderCode")]
+        public string TransponderCode { get; set; }
+
+        [JsonProperty(PropertyName = "location")]
+        public LocationRequestOrResponse Location { get; set; }
     }
 }
