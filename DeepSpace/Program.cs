@@ -19,6 +19,13 @@ namespace DeepSpace
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(
+                    (WebHostBuilderContext context, IConfigurationBuilder builder) =>
+                    {
+                        builder.Sources.Clear();
+
+                        builder.AddEnvironmentVariables();
+                    })
                 .UseStartup<Startup>()
                 .Build();
     }
