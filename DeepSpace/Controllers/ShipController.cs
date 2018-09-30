@@ -35,7 +35,6 @@ namespace DeepSpace.Controllers
         {
             try
             {
-                var ship = await new ShipManager().CreateShipAsync(value.Name);
                 var response = new CreateShipResponse
                 {
                     Name = ship.Name,

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DeepSpace.Contracts
 {
     public interface IShipManager
     {
-        //Ship CreateShip(string name);
+        Task<Ship> CreateShipAsync(string name);
     }
 }
