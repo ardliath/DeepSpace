@@ -23,10 +23,12 @@ namespace DeepSpace
                     (WebHostBuilderContext context, IConfigurationBuilder builder) =>
                     {
                         builder.Sources.Clear();
-
-                        builder.AddEnvironmentVariables();
+                        builder
+                            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                            .AddEnvironmentVariables();
                     })
                 .UseStartup<Startup>()
                 .Build();
     }
 }
+    
