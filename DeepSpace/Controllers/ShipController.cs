@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DeepSpace.Contracts;
-using DeepSpace.Core;
 using DeepSpace.Messages;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +11,13 @@ namespace DeepSpace.Controllers
     [Route("api/[controller]/[Action]")]
     public class ShipController : Controller
     {
+        public ShipController(IShipManager shipManager)
+        {            
+            this.ShipManager = shipManager;
+        }
+        
+        public IShipManager ShipManager { get; }
+
         // GET api/ship/details
         [HttpGet]
         [ActionName("Details")]
@@ -35,7 +41,7 @@ namespace DeepSpace.Controllers
         {
             try
             {
-                var ship = await new ShipManager().CreateShipAsync(value.Name);
+                var ship = await this.ShipManager.CreateShipAsync(value.Name);
                 var response = new CreateShipResponse
                 {
                     Name = ship.Name,

@@ -7,6 +7,13 @@ namespace DeepSpace.Core
 {
     public class ShipManager : IShipManager
     {
+       public ShipManager(IShipDataAccess shipDataAccess)
+        {
+            this.ShipDataAccess = shipDataAccess;
+        }
+
+        public IShipDataAccess ShipDataAccess { get; }
+
         public async Task<Ship> CreateShipAsync(string name)
         {
             var ship = new Ship
@@ -22,7 +29,7 @@ namespace DeepSpace.Core
                 }
             };
 
-            await new ShipDataAccess().InsertShipAsync(ship);
+            await this.ShipDataAccess.InsertShipAsync(ship);
             return ship;
         }
     }

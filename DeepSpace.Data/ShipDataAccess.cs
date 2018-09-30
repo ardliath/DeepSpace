@@ -1,6 +1,7 @@
 ﻿using DeepSpace.Contracts;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Configuration;
 using System.Threading.Tasks;
@@ -9,6 +10,13 @@ namespace DeepSpace.Data
 {
     public class ShipDataAccess : IShipDataAccess
     {
+        public ShipDataAccess(IConfiguration configuration)
+        {
+            this.Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         public async Task<Ship> InsertShipAsync(Ship ship)
         {
             using (var client = CreateDocumentClient())
@@ -20,8 +28,8 @@ namespace DeepSpace.Data
 
         private DocumentClient CreateDocumentClient()
         {
-            var url = ConfigurationManager.AppSettings["DatabaseEndpoint"];
-            var key = ConfigurationManager.AppSettings["DatabaseKey"];
+            var url = this.Configuration.GetSection("DatabaseEndpoint").Value;
+            var key = this.Configuration.GetSection("DatabaseKey").Value;
             return new DocumentClient(new Uri(url), key);
         }
     }
