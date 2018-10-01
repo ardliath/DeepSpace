@@ -33,12 +33,16 @@ namespace DeepSpace.Core
             return ship;
         }
 
+        public Task<Ship> GetShipAsync(string commandCode)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Move> MoveAsync(string commandCode, decimal x, decimal y, decimal z)
         {
-            var ship = new Ship();
+            var ship = await this.GetShipAsync(commandCode);
             var time = new TimeSpan(0, 1, 0);
             var destination = new Location { X = x, Y = y, Z = z };
-            throw new NotImplementedException(); // load from DB
 
             var now = DateTime.UtcNow;
             

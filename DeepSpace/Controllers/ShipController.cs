@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DeepSpace.Contracts;
 using DeepSpace.Messages;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace DeepSpace.Controllers
 {
@@ -29,9 +30,10 @@ namespace DeepSpace.Controllers
         // GET api/ship/details/5
         [HttpGet("{id}")]
         [ActionName("Details")]
-        public string Get(int id)
+        public async Task<string> Get(string id)
         {
-            return $"ID was {id}";
+            var ship = await this.ShipManager.GetShipAsync(id);
+            return JsonConvert.SerializeObject(ship);
         }
 
         // POST api/ship/create

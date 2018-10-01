@@ -9,5 +9,6 @@ namespace DeepSpace.Contracts
     {
         Task<Ship> CreateShipAsync(string name);
         Task<Move> MoveAsync(string commandCode, decimal x, decimal y, decimal z);
+        Task<Ship> GetShipAsync(string commandCode);
     }
 }
