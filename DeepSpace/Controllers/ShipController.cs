@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DeepSpace.Contracts;
 using DeepSpace.Messages;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace DeepSpace.Controllers
 {
@@ -29,15 +30,23 @@ namespace DeepSpace.Controllers
         // GET api/ship/details/5
         [HttpGet("{id}")]
         [ActionName("Details")]
-        public string Get(int id)
+        public string Get(string id)
         {
-            return $"ID was {id}";
+            var ship = this.ShipManager.GetShip(id);
+            if (ship == null)
+            {
+                return "Ship not found";
+            }
+            else
+            {
+                return $"Ship {ship.Name} was found";
+            }
         }
 
         // POST api/ship/create
         [HttpPost]        
         [ActionName("Create")]
-        public async Task<CreateShipResponse> Post([FromBody] CreateShipRequest value)
+        public async Task<CreateShipResponse> Create([FromBody] CreateShipRequest value)
         {
             try
             {
@@ -66,16 +75,29 @@ namespace DeepSpace.Controllers
             }
         }
 
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
+        [HttpPost]
+        [ActionName("Move")]
+        public async Task<MoveShipResponse> Move([FromBody] MoveShipRequest value)
+        {
+            var move = await this.ShipManager.MoveAsync(value.CommandCode, value.Destination.X, value.Destination.Y, value.Destination.Z);
+            var response = new MoveShipResponse
+            {
+                ArrivalTime = move.ArrivalTime
+            };
 
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
-    }
+            return response;
+        }
+
+            //// PUT api/values/5
+            //[HttpPut("{id}")]
+            //public void Put(int id, [FromBody]string value)
+            //{
+            //}
+
+            //// DELETE api/values/5
+            //[HttpDelete("{id}")]
+            //public void Delete(int id)
+            //{
+            //}
+        }
 }
