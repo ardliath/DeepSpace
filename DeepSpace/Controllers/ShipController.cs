@@ -24,6 +24,7 @@ namespace DeepSpace.Controllers
         [ActionName("Details")]
         public IEnumerable<string> Get()
         {
+            //await this.ShipManager.MoveAsync("3fdf7642-bb23-452f-b403-ffb016617bd2", 1, 1, 1);
             return new string[] { "value1", "value2" };
         }
 

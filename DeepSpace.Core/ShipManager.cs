@@ -56,6 +56,7 @@ namespace DeepSpace.Core
             };
             ship.Location = null;
             ship.Move = move;
+            await this.ShipDataAccess.UpsertShipAsync(ship);
 
             return move;
         }
