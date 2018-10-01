@@ -73,15 +73,7 @@ namespace DeepSpace.Controllers
             var move = await this.ShipManager.MoveAsync(value.CommandCode, value.Destination.X, value.Destination.Y, value.Destination.Z);
             var response = new MoveShipResponse
             {
-                //Name = ship.Name,
-                //CommandCode = ship.CommandCode,
-                //TransponderCode = ship.TransponderCode,
-                //Location = new LocationRequestOrResponse
-                //{
-                //    X = ship.Location.X,
-                //    Y = ship.Location.Y,
-                //    Z = ship.Location.Z
-                //}
+                ArrivalTime = move.ArrivalTime
             };
 
             return response;
