@@ -30,10 +30,17 @@ namespace DeepSpace.Controllers
         // GET api/ship/details/5
         [HttpGet("{id}")]
         [ActionName("Details")]
-        public async Task<string> Get(string id)
+        public string Get(string id)
         {
-            var ship = await this.ShipManager.GetShipAsync(id);
-            return JsonConvert.SerializeObject(ship);
+            var ship = this.ShipManager.GetShip(id);
+            if (ship == null)
+            {
+                return "Ship not found";
+            }
+            else
+            {
+                return $"Ship {ship.Name} was found";
+            }
         }
 
         // POST api/ship/create
