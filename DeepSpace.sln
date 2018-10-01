@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeepSpace", "DeepSpace\Deep
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{89AC83DE-F1E1-40DB-BF26-C0DAD1A16A1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepSpace.Contracts", "DeepSpace.Contracts\DeepSpace.Contracts.csproj", "{124F5785-221B-476F-B7EA-D3966A6A3883}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeepSpace.Contracts", "DeepSpace.Contracts\DeepSpace.Contracts.csproj", "{124F5785-221B-476F-B7EA-D3966A6A3883}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepSpace.Core", "DeepSpace.Core\DeepSpace.Core.csproj", "{81D634AE-7D0C-4BEE-A384-15D5E9680EA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeepSpace.Core", "DeepSpace.Core\DeepSpace.Core.csproj", "{81D634AE-7D0C-4BEE-A384-15D5E9680EA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepSpace.Data", "DeepSpace.Data\DeepSpace.Data.csproj", "{12273E05-4B0A-4BC5-9434-8A097ACC09A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeepSpace.Data", "DeepSpace.Data\DeepSpace.Data.csproj", "{12273E05-4B0A-4BC5-9434-8A097ACC09A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
