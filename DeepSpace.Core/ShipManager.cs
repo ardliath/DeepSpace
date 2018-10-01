@@ -32,5 +32,10 @@ namespace DeepSpace.Core
             await this.ShipDataAccess.InsertShipAsync(ship);
             return ship;
         }
+
+        public Task<TimeSpan> MoveAsync(string commandCode, decimal x, decimal y, decimal z)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

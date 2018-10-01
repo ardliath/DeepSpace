@@ -37,7 +37,7 @@ namespace DeepSpace.Controllers
         // POST api/ship/create
         [HttpPost]        
         [ActionName("Create")]
-        public async Task<CreateShipResponse> Post([FromBody] CreateShipRequest value)
+        public async Task<CreateShipResponse> Create([FromBody] CreateShipRequest value)
         {
             try
             {
@@ -66,16 +66,37 @@ namespace DeepSpace.Controllers
             }
         }
 
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
+        [HttpPost]
+        [ActionName("Move")]
+        public async Task<MoveShipResponse> Move([FromBody] MoveShipRequest value)
+        {
+            var move = await this.ShipManager.MoveAsync(value.CommandCode, value.Destination.X, value.Destination.Y, value.Destination.Z);
+            var response = new MoveShipResponse
+            {
+                //Name = ship.Name,
+                //CommandCode = ship.CommandCode,
+                //TransponderCode = ship.TransponderCode,
+                //Location = new LocationRequestOrResponse
+                //{
+                //    X = ship.Location.X,
+                //    Y = ship.Location.Y,
+                //    Z = ship.Location.Z
+                //}
+            };
 
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
-    }
+            return response;
+        }
+
+            //// PUT api/values/5
+            //[HttpPut("{id}")]
+            //public void Put(int id, [FromBody]string value)
+            //{
+            //}
+
+            //// DELETE api/values/5
+            //[HttpDelete("{id}")]
+            //public void Delete(int id)
+            //{
+            //}
+        }
 }
