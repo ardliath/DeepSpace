@@ -16,5 +16,8 @@ namespace DeepSpace.Messages
 
         [JsonProperty(PropertyName = "location")]
         public LocationRequestOrResponse Location { get; set; }
+
+        [JsonProperty(PropertyName = "health")]
+        public double Health { get; set; }
     }
 }

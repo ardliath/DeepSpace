@@ -59,5 +59,23 @@ namespace DeepSpace.Core
 
             return move;
         }
+
+        public void ReceiveDamage(string commandCode, double damage)
+        {
+            var ship =  ShipDataAccess.GetShip(commandCode);
+            ship.UpdateHealth(-damage);
+        }
+
+        public void Repair(string commandCode, double health)
+        {
+            var ship = ShipDataAccess.GetShip(commandCode);
+            ship.UpdateHealth(health);
+        }
+
+        public void Restore(string commandCode)
+        {
+            var ship = ShipDataAccess.GetShip(commandCode);
+            ship.Restore();
+        }
     }
 }

@@ -56,6 +56,7 @@ namespace DeepSpace.Controllers
                     Name = ship.Name,
                     CommandCode = ship.CommandCode,
                     TransponderCode = ship.TransponderCode,
+                    Health = ship.BaseHealth,
                     Location = new LocationRequestOrResponse
                     {
                         X = ship.Location.X,
@@ -88,16 +89,34 @@ namespace DeepSpace.Controllers
             return response;
         }
 
-            //// PUT api/values/5
-            //[HttpPut("{id}")]
-            //public void Put(int id, [FromBody]string value)
-            //{
-            //}
-
-            //// DELETE api/values/5
-            //[HttpDelete("{id}")]
-            //public void Delete(int id)
-            //{
-            //}
+        [HttpPut]
+        [ActionName("Repair")]
+        public string Repair([FromBody] RepairShipRequest value)
+        {
+            ShipManager.Repair(value.CommandCode, value.Health);
+            return "Ship repaired";
         }
+
+
+        [HttpPut]
+        [ActionName("Repair")]
+        public string Repair([FromBody] RestoreShipRequest value)
+        {
+            ShipManager.Restore(value.CommandCode);
+            return "Ship restored";
+        }
+
+
+        //// PUT api/values/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody]string value)
+        //{
+        //}
+
+        //// DELETE api/values/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
+    }
 }
