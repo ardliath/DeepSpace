@@ -26,6 +26,10 @@ namespace DeepSpace.Core
                     X = 0,
                     Y = 0,
                     Z = 0
+                },
+                Statistics = new Statistics
+                {
+                    Speed = 1
                 }
             };
 
@@ -51,7 +55,7 @@ namespace DeepSpace.Core
                 await this.ShipDataAccess.UpsertShipAsync(ship);
             }
 
-            var time = new TimeSpan(0, 1, 0); // not all journeys should take a minute!
+            var time = new TimeSpan(0, 1, 0); // not all journeys should take a minute! They should be calculated based on the ship's speed
             var destination = new Location { X = x, Y = y, Z = z };
 
             var now = DateTime.UtcNow;

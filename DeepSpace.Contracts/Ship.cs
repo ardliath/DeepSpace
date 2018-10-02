@@ -4,6 +4,9 @@ namespace DeepSpace.Contracts
 {
     public class Ship
     {
+        [JsonProperty(PropertyName = "type")]
+        public const string Type = "Ship";
+
         [JsonProperty(PropertyName = "id")]
         public string ID { get; set; }
 
@@ -13,5 +16,7 @@ namespace DeepSpace.Contracts
 
         public Location Location { get; set; }
         public Move Move { get; set; }
+
+        public Statistics Statistics { get; set; }
     }    
 }
