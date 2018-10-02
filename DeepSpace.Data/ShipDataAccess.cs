@@ -67,12 +67,12 @@ namespace DeepSpace.Data
                 return client.CreateDocumentQuery<Ship>(CreateCollectionLink())
                     .Where(s => s.CommandCode != commandCode // don't scan yourself!
                         && s.Location != null // and they're not moving
-                        && s.Location.X > location.X - scanRange
-                        && s.Location.X < location.X + scanRange
-                        && s.Location.Y > location.Y - scanRange
-                        && s.Location.Y < location.Y + scanRange
-                        && s.Location.Z > location.Z - scanRange
-                        && s.Location.Z < location.Z + scanRange)
+                        && s.Location.X >= location.X - scanRange
+                        && s.Location.X <= location.X + scanRange
+                        && s.Location.Y >= location.Y - scanRange
+                        && s.Location.Y <= location.Y + scanRange
+                        && s.Location.Z >= location.Z - scanRange
+                        && s.Location.Z <= location.Z + scanRange)
                     .AsEnumerable<Ship>();
             }
         }
