@@ -1,6 +1,7 @@
 ﻿using DeepSpace.Contracts;
 using DeepSpace.Data;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DeepSpace.Core
@@ -73,6 +74,11 @@ namespace DeepSpace.Core
             await this.ShipDataAccess.UpsertShipAsync(ship);
 
             return move;
+        }
+
+        public async Task<IEnumerable<Ship>> ScanAsync(string commandCode)
+        {
+            return new Ship[] { };
         }
 
         private bool UpdateMovements(Ship ship)
