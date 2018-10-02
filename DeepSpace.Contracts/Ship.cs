@@ -7,5 +7,6 @@
         public string TransponderCode { get; set; }
 
         public Location Location { get; set; }
+        public Move Move { get; set; }
     }    
 }
