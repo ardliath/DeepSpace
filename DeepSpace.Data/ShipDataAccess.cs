@@ -60,9 +60,21 @@ namespace DeepSpace.Data
             }            
         }
 
-        public Task<IEnumerable<Ship>> ScanForShipsAsync(Location location, int scanRange)
+        public IEnumerable<Ship> ScanForShips(string commandCode, Location location, int scanRange)
         {
-            throw new NotImplementedException();
+            using (var client = CreateDocumentClient())
+            {
+                return client.CreateDocumentQuery<Ship>(CreateCollectionLink())
+                    .Where(s => s.CommandCode != commandCode // don't scan yourself!
+                        && s.Location != null // and they're not moving
+                        && s.Location.X > location.X - scanRange
+                        && s.Location.X < location.X + scanRange
+                        && s.Location.Y > location.Y - scanRange
+                        && s.Location.Y < location.Y + scanRange
+                        && s.Location.Z > location.Z - scanRange
+                        && s.Location.Z < location.Z + scanRange)
+                    .AsEnumerable<Ship>();
+            }
         }
     }
 }
