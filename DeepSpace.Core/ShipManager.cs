@@ -30,7 +30,8 @@ namespace DeepSpace.Core
                 },
                 Statistics = new Statistics
                 {
-                    Speed = 1
+                    Speed = 1,
+                    ScanRange = 1
                 }
             };
 
@@ -78,7 +79,9 @@ namespace DeepSpace.Core
 
         public async Task<IEnumerable<Ship>> ScanAsync(string commandCode)
         {
-            return new Ship[] { };
+            var ship = this.ShipDataAccess.GetShip(commandCode);
+            var nearbyShips = await this.ShipDataAccess.ScanForShipsAsync(ship.Location, ship.Statistics.ScanRange);
+            return nearbyShips;
         }
 
         private bool UpdateMovements(Ship ship)

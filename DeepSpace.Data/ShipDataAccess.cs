@@ -3,6 +3,7 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,6 +58,11 @@ namespace DeepSpace.Data
                 await client.UpsertDocumentAsync(CreateCollectionLink(), ship);
                 return await Task.FromResult(ship);
             }            
+        }
+
+        public Task<IEnumerable<Ship>> ScanForShipsAsync(Location location, int scanRange)
+        {
+            throw new NotImplementedException();
         }
     }
 }
