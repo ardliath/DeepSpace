@@ -66,9 +66,9 @@ namespace DeepSpace.Core
 
             // FYI: https://math.stackexchange.com/a/42643
 
-            var distanceX = ship.Location.X - destination.X;
-            var distanceY = ship.Location.Y - destination.Y;
-            var distanceZ = ship.Location.Z - destination.Z;
+            var distanceX = Math.Abs(ship.Location.X - destination.X);
+            var distanceY = Math.Abs(ship.Location.Y - destination.Y);
+            var distanceZ = Math.Abs(ship.Location.Z - destination.Z);
 
             var deltaX = Math.Pow((double)distanceX, (double)distanceX);
             var deltaY = Math.Pow((double)distanceY, (double)distanceY);
@@ -76,8 +76,8 @@ namespace DeepSpace.Core
 
             var overallMovement = Math.Sqrt(deltaX + deltaY + deltaZ);
 
-            // Then simple Time = Speed / Distance calc. We're going to round because you're using TimeSpan.
-            var timeToMove = Convert.ToInt32(Math.Round((speed / overallMovement), 0, MidpointRounding.AwayFromZero));
+            // Then simple Time = Distance / Speed calc. We're going to round because you're using TimeSpan.
+            var timeToMove = Convert.ToInt32(Math.Round((overallMovement / speed), 0, MidpointRounding.AwayFromZero));
 
             var time = new TimeSpan(0, timeToMove, 0);
             var now = DateTime.UtcNow;
