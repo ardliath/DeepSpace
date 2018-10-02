@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DeepSpace.Core
 {
+    /// <summary>
+    /// All the business logic for creating/managing ships
+    /// </summary>
     public class ShipManager : IShipManager
     {
        public ShipManager(IShipDataAccess shipDataAccess)

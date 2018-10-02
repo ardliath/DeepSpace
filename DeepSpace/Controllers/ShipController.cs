@@ -45,35 +45,25 @@ namespace DeepSpace.Controllers
         }
 
         // POST api/ship/create
-        [HttpPost]        
+        [HttpPost]
         [ActionName("Create")]
         public async Task<CreateShipResponse> Create([FromBody] CreateShipRequest value)
         {
-            try
+            var ship = await this.ShipManager.CreateShipAsync(value.Name);
+            var response = new CreateShipResponse
             {
-                var ship = await this.ShipManager.CreateShipAsync(value.Name);
-                var response = new CreateShipResponse
+                Name = ship.Name,
+                CommandCode = ship.CommandCode,
+                TransponderCode = ship.TransponderCode,
+                Location = new LocationRequestOrResponse
                 {
-                    Name = ship.Name,
-                    CommandCode = ship.CommandCode,
-                    TransponderCode = ship.TransponderCode,
-                    Location = new LocationRequestOrResponse
-                    {
-                        X = ship.Location.X,
-                        Y = ship.Location.Y,
-                        Z = ship.Location.Z
-                    }
-                };
+                    X = ship.Location.X,
+                    Y = ship.Location.Y,
+                    Z = ship.Location.Z
+                }
+            };
 
-                return response;
-            }
-            catch (Exception ex)
-            {
-                return new CreateShipResponse
-                {
-                    Name = $"{ex.Message} - {ex.StackTrace}"  // let's not even start talking about why this is a bad idea!
-                };
-            }
+            return response;
         }
 
         [HttpPost]
