@@ -64,16 +64,25 @@ namespace DeepSpace.Data
         {
             using (var client = CreateDocumentClient())
             {
+                decimal minX = location.X - scanRange;
+                decimal maxX = location.X + scanRange;
+                decimal minY = location.Y - scanRange;
+                decimal maxY = location.Y + scanRange;
+                decimal minZ = location.Z - scanRange;
+                decimal maxZ = location.Z + scanRange;
+
+
                 return client.CreateDocumentQuery<Ship>(CreateCollectionLink())
                     .Where(s => s.CommandCode != commandCode // don't scan yourself!
                         && s.Location != null // and they're not moving
-                        && s.Location.X >= location.X - scanRange
-                        && s.Location.X <= location.X + scanRange
-                        && s.Location.Y >= location.Y - scanRange
-                        && s.Location.Y <= location.Y + scanRange
-                        && s.Location.Z >= location.Z - scanRange
-                        && s.Location.Z <= location.Z + scanRange)
-                    .AsEnumerable<Ship>();
+                        && s.Location.X >= minX
+                        && s.Location.X <= maxX
+                        && s.Location.Y >= minY
+                        && s.Location.Y <= maxY
+                        && s.Location.Z >= minZ
+                        && s.Location.Z <= maxZ)
+                    .AsEnumerable<Ship>()
+                    .ToList();
             }
         }
     }
