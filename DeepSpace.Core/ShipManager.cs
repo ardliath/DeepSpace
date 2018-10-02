@@ -10,7 +10,7 @@ namespace DeepSpace.Core
     /// </summary>
     public class ShipManager : IShipManager
     {
-       public ShipManager(IShipDataAccess shipDataAccess)
+        public ShipManager(IShipDataAccess shipDataAccess)
         {
             this.ShipDataAccess = shipDataAccess;
         }
@@ -19,16 +19,18 @@ namespace DeepSpace.Core
 
         public async Task<Ship> CreateShipAsync(string name)
         {
+            var random = new Random();
+
             var ship = new Ship
             {
                 Name = name,
                 CommandCode = Guid.NewGuid().ToString(),
                 TransponderCode = Guid.NewGuid().ToString(),
-                Location = new Location // this would be better at semi-random coordinates
+                Location = new Location
                 {
-                    X = 0,
-                    Y = 0,
-                    Z = 0
+                    X = random.Next(),
+                    Y = random.Next(),
+                    Z = random.Next()
                 },
                 Statistics = new Statistics
                 {
@@ -53,7 +55,7 @@ namespace DeepSpace.Core
         public async Task<Move> MoveAsync(string commandCode, decimal x, decimal y, decimal z)
         {
             var ship = await this.GetShipAsync(commandCode);
-            if(this.UpdateMovements(ship))
+            if (this.UpdateMovements(ship))
             {
                 await this.ShipDataAccess.UpsertShipAsync(ship);
             }
@@ -62,7 +64,7 @@ namespace DeepSpace.Core
             var destination = new Location { X = x, Y = y, Z = z };
 
             var now = DateTime.UtcNow;
-            
+
             var move = new Move
             {
                 StartTime = now,
@@ -81,7 +83,7 @@ namespace DeepSpace.Core
         private bool UpdateMovements(Ship ship)
         {
             var now = DateTime.UtcNow;
-            if(ship.Move != null && ship.Move.ArrivalTime < now)
+            if (ship.Move != null && ship.Move.ArrivalTime < now)
             {
                 ship.Location = ship.Move.To;
                 ship.Move = null;
