@@ -24,15 +24,16 @@ namespace DeepSpace.Controllers
         [ActionName("Details")]
         public IEnumerable<string> Get()
         {
+            //await this.ShipManager.MoveAsync("3fdf7642-bb23-452f-b403-ffb016617bd2", 1, 1, 1);
             return new string[] { "value1", "value2" };
         }
 
         // GET api/ship/details/5
         [HttpGet("{id}")]
         [ActionName("Details")]
-        public string Get(string id)
+        public async Task<string> Get(string id)
         {
-            var ship = this.ShipManager.GetShip(id);
+            var ship = await this.ShipManager.GetShipAsync(id);
             if (ship == null)
             {
                 return "Ship not found";

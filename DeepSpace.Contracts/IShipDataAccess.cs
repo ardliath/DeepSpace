@@ -8,6 +8,7 @@ namespace DeepSpace.Contracts
     public interface IShipDataAccess
     {
         Task<Ship> InsertShipAsync(Ship ship);
+        Task<Ship> UpsertShipAsync(Ship ship);
         Ship GetShip(string commandCode);
     }
 }

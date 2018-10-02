@@ -49,5 +49,14 @@ namespace DeepSpace.Data
             var key = this.Configuration.GetSection("DatabaseKey").Value;
             return new DocumentClient(new Uri(url), key);
         }
+
+        public async Task<Ship> UpsertShipAsync(Ship ship)
+        {            
+            using (var client = CreateDocumentClient())
+            {                
+                await client.UpsertDocumentAsync(CreateCollectionLink(), ship);
+                return await Task.FromResult(ship);
+            }            
+        }
     }
 }

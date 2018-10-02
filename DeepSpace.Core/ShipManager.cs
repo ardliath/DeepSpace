@@ -26,6 +26,10 @@ namespace DeepSpace.Core
                     X = 0,
                     Y = 0,
                     Z = 0
+                },
+                Statistics = new Statistics
+                {
+                    Speed = 1
                 }
             };
 
@@ -33,15 +37,25 @@ namespace DeepSpace.Core
             return ship;
         }
 
-        public Ship GetShip(string commandCode)
+        public async Task<Ship> GetShipAsync(string commandCode)
         {
-            return this.ShipDataAccess.GetShip(commandCode);
+            var ship = this.ShipDataAccess.GetShip(commandCode);
+            if (this.UpdateMovements(ship))
+            {
+                await this.ShipDataAccess.UpsertShipAsync(ship);
+            }
+            return await Task.FromResult(ship);
         }
 
         public async Task<Move> MoveAsync(string commandCode, decimal x, decimal y, decimal z)
         {
-            var ship = this.GetShip(commandCode);
-            var time = new TimeSpan(0, 1, 0); // not all journeys should take a minute!
+            var ship = await this.GetShipAsync(commandCode);
+            if(this.UpdateMovements(ship))
+            {
+                await this.ShipDataAccess.UpsertShipAsync(ship);
+            }
+
+            var time = new TimeSpan(0, 1, 0); // not all journeys should take a minute! They should be calculated based on the ship's speed
             var destination = new Location { X = x, Y = y, Z = z };
 
             var now = DateTime.UtcNow;
@@ -56,8 +70,22 @@ namespace DeepSpace.Core
             };
             ship.Location = null;
             ship.Move = move;
+            await this.ShipDataAccess.UpsertShipAsync(ship);
 
             return move;
+        }
+
+        private bool UpdateMovements(Ship ship)
+        {
+            var now = DateTime.UtcNow;
+            if(ship.Move != null && ship.Move.ArrivalTime < now)
+            {
+                ship.Location = ship.Move.To;
+                ship.Move = null;
+
+                return true;
+            }
+            return false;
         }
     }
 }
