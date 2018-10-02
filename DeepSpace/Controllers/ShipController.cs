@@ -81,9 +81,9 @@ namespace DeepSpace.Controllers
 
         [HttpPost]
         [ActionName("Scan")]
-        public ScanResponse Scan([FromBody] ScanRequest value)
+        public async Task<ScanResponse> Scan([FromBody] ScanRequest value)
         {
-            var shipsInRange = this.ShipManager.Scan(value.CommandCode);
+            var shipsInRange = await this.ShipManager.ScanAsync(value.CommandCode);
             var response = new ScanResponse
             {
                 Ships = shipsInRange.Select(s =>

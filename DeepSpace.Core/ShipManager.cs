@@ -99,10 +99,13 @@ namespace DeepSpace.Core
             return move;
         }
 
-        public IEnumerable<Ship> Scan(string commandCode)
+        public async Task<IEnumerable<Ship>> ScanAsync(string commandCode)
         {
             var ship = this.ShipDataAccess.GetShip(commandCode);
-            this.UpdateMovements(ship);
+            if(this.UpdateMovements(ship))
+            {
+                await this.ShipDataAccess.UpsertShipAsync(ship);
+            }
             var nearbyShips = this.ShipDataAccess.ScanForShips(ship.CommandCode, ship.Location, ship.Statistics.ScanRange);
             return nearbyShips;
         }
