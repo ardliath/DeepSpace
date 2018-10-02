@@ -102,6 +102,7 @@ namespace DeepSpace.Core
         public IEnumerable<Ship> Scan(string commandCode)
         {
             var ship = this.ShipDataAccess.GetShip(commandCode);
+            this.UpdateMovements(ship);
             var nearbyShips = this.ShipDataAccess.ScanForShips(ship.CommandCode, ship.Location, ship.Statistics.ScanRange);
             return nearbyShips;
         }
