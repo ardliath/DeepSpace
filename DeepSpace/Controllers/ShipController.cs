@@ -79,16 +79,42 @@ namespace DeepSpace.Controllers
             return response;
         }
 
-            //// PUT api/values/5
-            //[HttpPut("{id}")]
-            //public void Put(int id, [FromBody]string value)
-            //{
-            //}
+        [HttpPost]
+        [ActionName("Scan")]
+        public async Task<ScanResponse> Scan([FromBody] ScanRequest value)
+        {
+            var shipsInRange = await this.ShipManager.ScanAsync(value.CommandCode);
+            var response = new ScanResponse
+            {
+                Ships = shipsInRange.Select(s =>
+                new ShipSummary
+                {
+                    Name = s.Name,
+                    TransponderCode = s.TransponderCode,
+                    Location = s.Location == null
+                        ? null 
+                        : new LocationRequestOrResponse
+                            {
+                                X = s.Location.X,
+                                Y = s.Location.Y,
+                                Z = s.Location.Z
+                            }
+                })
+            };
 
-            //// DELETE api/values/5
-            //[HttpDelete("{id}")]
-            //public void Delete(int id)
-            //{
-            //}
+            return response;
         }
+
+        //// PUT api/values/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody]string value)
+        //{
+        //}
+
+        //// DELETE api/values/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
+    }
 }
