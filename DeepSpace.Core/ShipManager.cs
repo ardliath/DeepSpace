@@ -19,16 +19,18 @@ namespace DeepSpace.Core
 
         public async Task<Ship> CreateShipAsync(string name)
         {
+            var random = new Random();
+
             var ship = new Ship
             {
                 Name = name,
                 CommandCode = Guid.NewGuid().ToString(),
                 TransponderCode = Guid.NewGuid().ToString(),
-                Location = new Location // this would be better at semi-random coordinates
+                Location = new Location
                 {
-                    X = 0,
-                    Y = 0,
-                    Z = 0
+                    X = random.Next(),
+                    Y = random.Next(),
+                    Z = random.Next()
                 },
                 Statistics = new Statistics
                 {
