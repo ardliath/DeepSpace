@@ -10,7 +10,7 @@ namespace DeepSpace.Core
     /// </summary>
     public class ShipManager : IShipManager
     {
-       public ShipManager(IShipDataAccess shipDataAccess)
+        public ShipManager(IShipDataAccess shipDataAccess)
         {
             this.ShipDataAccess = shipDataAccess;
         }
@@ -53,16 +53,33 @@ namespace DeepSpace.Core
         public async Task<Move> MoveAsync(string commandCode, decimal x, decimal y, decimal z)
         {
             var ship = await this.GetShipAsync(commandCode);
-            if(this.UpdateMovements(ship))
+            if (this.UpdateMovements(ship))
             {
                 await this.ShipDataAccess.UpsertShipAsync(ship);
             }
 
-            var time = new TimeSpan(0, 1, 0); // not all journeys should take a minute! They should be calculated based on the ship's speed
             var destination = new Location { X = x, Y = y, Z = z };
 
+            var speed = ship.Statistics.Speed;
+
+            // FYI: https://math.stackexchange.com/a/42643
+
+            var distanceX = ship.Location.X - destination.X;
+            var distanceY = ship.Location.Y - destination.Y;
+            var distanceZ = ship.Location.Z - destination.Z;
+
+            var deltaX = Math.Pow((double)distanceX, (double)distanceX);
+            var deltaY = Math.Pow((double)distanceY, (double)distanceY);
+            var deltaZ = Math.Pow((double)distanceZ, (double)distanceZ);
+
+            var overallMovement = Math.Sqrt(deltaX + deltaY + deltaZ);
+
+            // Then simple Time = Speed / Distance calc. We're going to round because you're using TimeSpan.
+            var timeToMove = Convert.ToInt32(Math.Round((speed / overallMovement), 0, MidpointRounding.AwayFromZero));
+
+            var time = new TimeSpan(0, timeToMove, 0);
             var now = DateTime.UtcNow;
-            
+
             var move = new Move
             {
                 StartTime = now,
@@ -81,7 +98,7 @@ namespace DeepSpace.Core
         private bool UpdateMovements(Ship ship)
         {
             var now = DateTime.UtcNow;
-            if(ship.Move != null && ship.Move.ArrivalTime < now)
+            if (ship.Move != null && ship.Move.ArrivalTime < now)
             {
                 ship.Location = ship.Move.To;
                 ship.Move = null;
