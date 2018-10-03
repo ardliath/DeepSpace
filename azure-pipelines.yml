@@ -5,6 +5,6 @@ steps:
   - 
     script: |-
         dotnet build --configuration $(buildConfiguration)
-        dotnet test dotnetcore-tests --configuration $(buildConfiguration)
+        dotnet test DeepSpace.Core.Tests --configuration $(buildConfiguration)
 variables: 
   buildConfiguration: Release
