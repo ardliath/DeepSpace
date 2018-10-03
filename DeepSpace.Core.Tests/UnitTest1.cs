@@ -8,7 +8,7 @@ namespace DeepSpace.Core.Tests
         [TestMethod]
         public void TestMethod1()
         {
-            Assert.Fail(); // break the build
+            //Assert.Fail(); // break the build
         }
     }
 }
