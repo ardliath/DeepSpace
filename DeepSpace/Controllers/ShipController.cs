@@ -13,10 +13,10 @@ namespace DeepSpace.Controllers
     public class ShipController : Controller
     {
         public ShipController(IShipManager shipManager)
-        {            
+        {
             this.ShipManager = shipManager;
         }
-        
+
         public IShipManager ShipManager { get; }
 
         // GET api/ship/details
@@ -24,15 +24,16 @@ namespace DeepSpace.Controllers
         [ActionName("Details")]
         public IEnumerable<string> Get()
         {
+            //await this.ShipManager.MoveAsync("3fdf7642-bb23-452f-b403-ffb016617bd2", 1, 1, 1);
             return new string[] { "value1", "value2" };
         }
 
         // GET api/ship/details/5
         [HttpGet("{id}")]
         [ActionName("Details")]
-        public string Get(string id)
+        public async Task<string> Get(string id)
         {
-            var ship = this.ShipManager.GetShip(id);
+            var ship = await this.ShipManager.GetShipAsync(id);
             if (ship == null)
             {
                 return "Ship not found";
@@ -44,36 +45,26 @@ namespace DeepSpace.Controllers
         }
 
         // POST api/ship/create
-        [HttpPost]        
+        [HttpPost]
         [ActionName("Create")]
         public async Task<CreateShipResponse> Create([FromBody] CreateShipRequest value)
         {
-            try
+            var ship = await this.ShipManager.CreateShipAsync(value.Name);
+            var response = new CreateShipResponse
             {
-                var ship = await this.ShipManager.CreateShipAsync(value.Name);
-                var response = new CreateShipResponse
+                Name = ship.Name,
+                CommandCode = ship.CommandCode,
+                TransponderCode = ship.TransponderCode,
+                Health = ship.BaseHealth,
+                Location = new LocationRequestOrResponse
                 {
-                    Name = ship.Name,
-                    CommandCode = ship.CommandCode,
-                    TransponderCode = ship.TransponderCode,
-                    Health = ship.BaseHealth,
-                    Location = new LocationRequestOrResponse
-                    {
-                        X = ship.Location.X,
-                        Y = ship.Location.Y,
-                        Z = ship.Location.Z
-                    }
-                };
+                    X = ship.Location.X,
+                    Y = ship.Location.Y,
+                    Z = ship.Location.Z
+                }
+            };
 
-                return response;
-            }
-            catch (Exception ex)
-            {
-                return new CreateShipResponse
-                {
-                    Name = $"{ex.Message} - {ex.StackTrace}"  // let's not even start talking about why this is a bad idea!
-                };
-            }
+            return response;
         }
 
         [HttpPost]
@@ -89,20 +80,52 @@ namespace DeepSpace.Controllers
             return response;
         }
 
-        [HttpPut]
-        [ActionName("Repair")]
-        public string Repair([FromBody] RepairShipRequest value)
+
+        [HttpPost]
+        [ActionName("Scan")]
+        public async Task<ScanResponse> Scan([FromBody] ScanRequest value)
         {
-            ShipManager.Repair(value.CommandCode, value.Health);
+            var shipsInRange = await this.ShipManager.ScanAsync(value.CommandCode);
+            var response = new ScanResponse
+            {
+                Ships = shipsInRange.Select(s =>
+                new ShipSummary
+                {
+                    Name = s.Name,
+                    TransponderCode = s.TransponderCode,
+                    Location = s.Location == null
+                        ? null
+                        : new LocationRequestOrResponse
+                        {
+                            X = s.Location.X,
+                            Y = s.Location.Y,
+                            Z = s.Location.Z
+                        }
+                })
+            };
+
+            return response;
+        }
+
+        //// PUT api/values/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody]string value)
+        //{
+        //}
+
+        [HttpPut]
+        [ActionName("Repair/hull")]
+        public async Task<string>  Repair([FromBody] RepairShipRequest value)
+        {
+            await ShipManager.RepairAsync(value.CommandCode);
             return "Ship repaired";
         }
 
-
         [HttpPut]
-        [ActionName("Repair")]
-        public string Repair([FromBody] RestoreShipRequest value)
+        [ActionName("Repair/shield")]
+        public async Task<string> Repair([FromBody] RestoreShipRequest value)
         {
-            ShipManager.Restore(value.CommandCode);
+            await ShipManager.RestoreAsync(value.CommandCode);
             return "Ship restored";
         }
 

@@ -3,8 +3,8 @@
     public interface IShieldUpgrades
     {
         string Name { get; set; }
-        int ShieldValue { get; set; }
-        float Weight { get; set; }
-        float SellingPrice { get; set; }
+        double ShieldValue { get; set; }
+        double Weight { get; set; }
+        double SellingPrice { get; set; }
     }
 }

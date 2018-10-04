@@ -9,10 +9,11 @@ namespace DeepSpace.Contracts
     {
         Task<Ship> CreateShipAsync(string name);
         Task<Move> MoveAsync(string commandCode, decimal x, decimal y, decimal z);
-        Ship GetShip(string commandCode);
-
-        void Repair(string commandCode, double health);
-        void Restore(string commandCode);
-        void ReceiveDamage(string commandCode, double health);
+        Task<Ship> GetShipAsync(string commandCode);
+        Task<IEnumerable<Ship>> ScanAsync(string commandCode);
+        Task AddShieldUpgradeAsync(string commandCode, IShieldUpgrades upgrade);
+        Task RepairAsync(string commandCode);
+        Task ReceiveDamageAsync(string commandCode, double damage);
+        Task RestoreAsync(string commandCode);
     }
 }
