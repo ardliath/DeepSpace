@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
-
+using DeepSpace.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 namespace DeepSpace.Contracts
 {
     public class Ship
@@ -13,6 +16,11 @@ namespace DeepSpace.Contracts
         public string Name { get; set; }
         public string CommandCode { get; set; }
         public string TransponderCode { get; set; }
+
+        public double BaseHealth { get; set; } = DeepSpaceConstants.BASE_HEALTH; // Could be based on ship type for example.
+        public double Shield => ShieldUpgrades.Sum(su => su.ShieldValue);
+        public List<IShieldUpgrades> ShieldUpgrades { get; set; }
+        public double CurrentHealth { get; set; }
 
         public Location Location { get; set; }
         public Move Move { get; set; }

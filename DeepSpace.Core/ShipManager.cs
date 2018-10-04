@@ -98,6 +98,39 @@ namespace DeepSpace.Core
 
             return move;
         }
+        
+        public async Task AddShieldUpgradeAsync(string commandCode, IShieldUpgrades upgrade)
+        {
+            var ship = await GetShipAsync(commandCode);
+
+            Console.WriteLine($"{ship.Name} ship bought {upgrade.Name} adding {upgrade.ShieldValue} shield points");
+            ship.ShieldUpgrades.Add(upgrade);
+            UpdateHealth(ship, DeepSpaceConstants.BASE_SHIELD_HEALTH);
+        }
+
+        public async Task ReceiveDamageAsync(string commandCode, double damage)
+        {
+            var ship =  await GetShipAsync(commandCode);
+            UpdateHealth(ship, -damage);
+        }
+
+        public async Task RepairAsync(string commandCode)
+        {
+            var ship = await GetShipAsync(commandCode);
+            UpdateHealth(ship, DeepSpaceConstants.BASE_AMOUNT_HEALTH_PER_REPAIR);
+        }
+
+        public async Task RestoreAsync(string commandCode)
+        {
+            var ship = await GetShipAsync(commandCode);
+            UpdateHealth(ship, ship.BaseHealth + ship.Shield);
+        }
+
+        private void UpdateHealth(Ship ship, double healthChange)
+        {
+            ship.CurrentHealth += healthChange;
+            Console.WriteLine($"{ship.Name} Health {healthChange}");
+        }
 
         public async Task<IEnumerable<Ship>> ScanAsync(string commandCode)
         {

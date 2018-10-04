@@ -13,10 +13,10 @@ namespace DeepSpace.Controllers
     public class ShipController : Controller
     {
         public ShipController(IShipManager shipManager)
-        {            
+        {
             this.ShipManager = shipManager;
         }
-        
+
         public IShipManager ShipManager { get; }
 
         // GET api/ship/details
@@ -55,6 +55,7 @@ namespace DeepSpace.Controllers
                 Name = ship.Name,
                 CommandCode = ship.CommandCode,
                 TransponderCode = ship.TransponderCode,
+                Health = ship.BaseHealth,
                 Location = new LocationRequestOrResponse
                 {
                     X = ship.Location.X,
@@ -92,13 +93,13 @@ namespace DeepSpace.Controllers
                     Name = s.Name,
                     TransponderCode = s.TransponderCode,
                     Location = s.Location == null
-                        ? null 
+                        ? null
                         : new LocationRequestOrResponse
-                            {
-                                X = s.Location.X,
-                                Y = s.Location.Y,
-                                Z = s.Location.Z
-                            }
+                        {
+                            X = s.Location.X,
+                            Y = s.Location.Y,
+                            Z = s.Location.Z
+                        }
                 })
             };
 
@@ -111,10 +112,20 @@ namespace DeepSpace.Controllers
         //{
         //}
 
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        [HttpPut]
+        [ActionName("Repair/hull")]
+        public async Task<string>  Repair([FromBody] RepairShipRequest value)
+        {
+            await ShipManager.RepairAsync(value.CommandCode);
+            return "Ship repaired";
+        }
+
+        [HttpPut]
+        [ActionName("Repair/shield")]
+        public async Task<string> Repair([FromBody] RestoreShipRequest value)
+        {
+            await ShipManager.RestoreAsync(value.CommandCode);
+            return "Ship restored";
+        }
     }
 }

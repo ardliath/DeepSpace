@@ -11,5 +11,9 @@ namespace DeepSpace.Contracts
         Task<Move> MoveAsync(string commandCode, decimal x, decimal y, decimal z);
         Task<Ship> GetShipAsync(string commandCode);
         Task<IEnumerable<Ship>> ScanAsync(string commandCode);
+        Task AddShieldUpgradeAsync(string commandCode, IShieldUpgrades upgrade);
+        Task RepairAsync(string commandCode);
+        Task ReceiveDamageAsync(string commandCode, double damage);
+        Task RestoreAsync(string commandCode);
     }
 }
