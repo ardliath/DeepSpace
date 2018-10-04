@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
-
 using DeepSpace.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace DeepSpace.Contracts
 {
     public class Ship

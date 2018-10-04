@@ -80,7 +80,6 @@ namespace DeepSpace.Controllers
             return response;
         }
 
-
         [HttpPost]
         [ActionName("Scan")]
         public async Task<ScanResponse> Scan([FromBody] ScanRequest value)
@@ -128,18 +127,5 @@ namespace DeepSpace.Controllers
             await ShipManager.RestoreAsync(value.CommandCode);
             return "Ship restored";
         }
-
-
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

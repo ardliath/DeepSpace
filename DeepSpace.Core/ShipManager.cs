@@ -98,7 +98,7 @@ namespace DeepSpace.Core
 
             return move;
         }
-
+        
         public async Task AddShieldUpgradeAsync(string commandCode, IShieldUpgrades upgrade)
         {
             var ship = await GetShipAsync(commandCode);
