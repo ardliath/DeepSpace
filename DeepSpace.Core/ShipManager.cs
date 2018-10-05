@@ -117,10 +117,14 @@ namespace DeepSpace.Core
 
         public async Task AttackShip(string commandCode, string transponderCode)
         {
-            var attackingShip =  await GetShipAsync(commandCode);
-            var defendingShip = await GetShipAsync(commandCode);
+            var attackingShip =  await GetShipAsync(commandCode); // get the attacking ship
+            var defendingShip = this.ShipDataAccess.GetShipByTransponderCode(transponderCode); // and the defending ship
+            if (this.UpdateMovements(defendingShip)) // if the defender's position has changed then update it
+            {
+                await this.ShipDataAccess.UpsertShipAsync(defendingShip);
+            }
 
-            UpdateHealth(defendingShip, -attackingShip.Statistics.FirePower);
+            UpdateHealth(defendingShip, -attackingShip.Statistics.FirePower); // reduce the defending ship's health by the firepower of the main ship
         }
 
         public async Task RepairAsync(string commandCode)
@@ -139,9 +143,13 @@ namespace DeepSpace.Core
         {
             ship.Statistics.CurrentHealth += healthChange;
             Console.WriteLine($"{ship.Name} Health {healthChange}");
-            if(ship.Statistics.CurrentHealth <=0)
+            if(ship.Statistics.CurrentHealth <= 0) // if it's dead
             {
-                this.KillShip();
+                this.KillShip(); // then kill it
+            }
+            else
+            {
+                this.ShipDataAccess.UpsertShipAsync(ship); // otherwise update them with the new health
             }
         }
 
