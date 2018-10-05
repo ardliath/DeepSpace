@@ -44,11 +44,14 @@ namespace DeepSpace.Core
         private Location DetermineStartLocation()
         {
             var random = new Random();
+            var x = random.Next(100) - 50;
+            var y = random.Next(100) - 50;
+            var z = random.Next(100) - 50;
             return new Location
             {
-                X = random.Next(),
-                Y = random.Next(),
-                Z = random.Next()
+                X = x,
+                Y = y,
+                Z = z
             };
         }
 
