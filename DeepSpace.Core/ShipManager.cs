@@ -115,7 +115,7 @@ namespace DeepSpace.Core
             UpdateHealth(ship, DeepSpaceConstants.BASE_SHIELD_HEALTH);
         }
 
-        public async Task AttackShip(string commandCode, string transponderCode)
+        public async Task AttackShipAsync(string commandCode, string transponderCode)
         {
             var attackingShip =  await GetShipAsync(commandCode); // get the attacking ship
             var defendingShip = this.ShipDataAccess.GetShipByTransponderCode(transponderCode); // and the defending ship

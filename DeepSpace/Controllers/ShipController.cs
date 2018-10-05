@@ -106,7 +106,13 @@ namespace DeepSpace.Controllers
             return response;
         }
 
-        async Task AttackShip(string commandCode, string transponderCode)
+        [HttpPost]
+        [ActionName("Attack")]
+        public async Task<string> Attack([FromBody] AttackShipRequest value)
+        {
+            await this.ShipManager.AttackShipAsync(value.CommandCode, value.TransponderCode);
+            return "Attack Complete";
+        }        
 
         [HttpPost]
         [ActionName("Repair/hull")]

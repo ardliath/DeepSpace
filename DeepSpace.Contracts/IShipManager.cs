@@ -13,7 +13,7 @@ namespace DeepSpace.Contracts
         Task<IEnumerable<Ship>> ScanAsync(string commandCode);
         Task AddShieldUpgradeAsync(string commandCode, IShieldUpgrades upgrade);
         Task RepairAsync(string commandCode);
-        Task AttackShip(string commandCode, string transponderCode);
+        Task AttackShipAsync(string commandCode, string transponderCode);
         Task RestoreAsync(string commandCode);
     }
 }
