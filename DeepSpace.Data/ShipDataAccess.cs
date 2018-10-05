@@ -30,6 +30,17 @@ namespace DeepSpace.Data
             }
         }
 
+        public Ship GetShipByTransponderCode(string transponderCode)
+        {
+            using (var client = CreateDocumentClient())
+            {
+                return client.CreateDocumentQuery<Ship>(CreateCollectionLink(), new FeedOptions { MaxItemCount = 1 })
+                    .Where(s => s.TransponderCode == transponderCode)
+                    .AsEnumerable<Ship>()
+                    .SingleOrDefault();
+            }
+        }
+
         public async Task<Ship> InsertShipAsync(Ship ship)
         {
             using (var client = CreateDocumentClient())

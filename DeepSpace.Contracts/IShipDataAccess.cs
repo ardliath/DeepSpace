@@ -10,6 +10,7 @@ namespace DeepSpace.Contracts
         Task<Ship> InsertShipAsync(Ship ship);
         Task<Ship> UpsertShipAsync(Ship ship);
         Ship GetShip(string commandCode);
+        Ship GetShipByTransponderCode(string transponderCode);
         IEnumerable<Ship> ScanForShips(string commandCode, Location location, int scanRange);
     }
 }
