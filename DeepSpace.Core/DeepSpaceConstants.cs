@@ -10,5 +10,6 @@ namespace DeepSpace.Core
         public static int BASE_HEALTH = 100;
         public static int BASE_SHIELD_HEALTH = 50;
         public static int BASE_FIREPOWER = 10;
+        public static int BASE_SCANRANGE = 100;
     }
 }

@@ -30,7 +30,7 @@ namespace DeepSpace.Core
                 Statistics = new Statistics
                 {
                     Speed = 1,
-                    ScanRange = 1,
+                    ScanRange = DeepSpaceConstants.BASE_SCANRANGE,
                     BaseHealth = DeepSpaceConstants.BASE_HEALTH,
                     CurrentHealth = DeepSpaceConstants.BASE_HEALTH,
                     FirePower = DeepSpaceConstants.BASE_FIREPOWER
