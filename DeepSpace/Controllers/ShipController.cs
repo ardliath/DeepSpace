@@ -55,7 +55,7 @@ namespace DeepSpace.Controllers
                 Name = ship.Name,
                 CommandCode = ship.CommandCode,
                 TransponderCode = ship.TransponderCode,
-                Health = ship.BaseHealth,
+                Health = ship.Statistics.BaseHealth,
                 Location = new LocationRequestOrResponse
                 {
                     X = ship.Location.X,
