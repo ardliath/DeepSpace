@@ -20,30 +20,39 @@ namespace DeepSpace.Core
 
         public async Task<Ship> CreateShipAsync(string name)
         {
-            var random = new Random();
-
+            var startLocation = DetermineStartLocation();
             var ship = new Ship
             {
                 Name = name,
                 CommandCode = Guid.NewGuid().ToString(),
                 TransponderCode = Guid.NewGuid().ToString(),
-                Location = new Location
-                {
-                    X = random.Next(),
-                    Y = random.Next(),
-                    Z = random.Next()
-                },
+                Location = startLocation,
                 Statistics = new Statistics
                 {
                     Speed = 1,
-                    ScanRange = 1,
+                    ScanRange = DeepSpaceConstants.BASE_SCANRANGE,
                     BaseHealth = DeepSpaceConstants.BASE_HEALTH,
-                    CurrentHealth = DeepSpaceConstants.BASE_HEALTH
+                    CurrentHealth = DeepSpaceConstants.BASE_HEALTH,
+                    FirePower = DeepSpaceConstants.BASE_FIREPOWER
                 }
             };
 
             await this.ShipDataAccess.InsertShipAsync(ship);
             return ship;
+        }
+
+        private Location DetermineStartLocation()
+        {
+            var random = new Random();
+            var x = random.Next(100) - 50;
+            var y = random.Next(100) - 50;
+            var z = random.Next(100) - 50;
+            return new Location
+            {
+                X = x,
+                Y = y,
+                Z = z
+            };
         }
 
         public async Task<Ship> GetShipAsync(string commandCode)
@@ -66,19 +75,8 @@ namespace DeepSpace.Core
 
             var destination = new Location { X = x, Y = y, Z = z };
 
-            var speed = ship.Statistics.Speed;
-
-            // FYI: https://math.stackexchange.com/a/42643
-
-            var distanceX = Math.Abs(ship.Location.X - destination.X);
-            var distanceY = Math.Abs(ship.Location.Y - destination.Y);
-            var distanceZ = Math.Abs(ship.Location.Z - destination.Z);
-
-            var deltaX = Math.Pow((double)distanceX, (double)distanceX);
-            var deltaY = Math.Pow((double)distanceY, (double)distanceY);
-            var deltaZ = Math.Pow((double)distanceZ, (double)distanceZ);
-
-            var overallMovement = Math.Sqrt(deltaX + deltaY + deltaZ);
+            var speed = ship.Statistics.Speed;            
+            double overallMovement = GetDistance(ship.Location, destination);
 
             // Then simple Time = Distance / Speed calc. We're going to round because you're using TimeSpan.
             var timeToMove = Convert.ToInt32(Math.Round((overallMovement / speed), 0, MidpointRounding.AwayFromZero));
@@ -100,7 +98,22 @@ namespace DeepSpace.Core
 
             return move;
         }
-        
+
+        public  double GetDistance(Location firstLocation, Location secondLocation)
+        {
+            // FYI: https://math.stackexchange.com/a/42643
+            var distanceX = Math.Abs(firstLocation.X - secondLocation.X);
+            var distanceY = Math.Abs(firstLocation.Y - secondLocation.Y);
+            var distanceZ = Math.Abs(firstLocation.Z - secondLocation.Z);
+
+            var deltaX = Math.Pow((double)distanceX, (double)distanceX);
+            var deltaY = Math.Pow((double)distanceY, (double)distanceY);
+            var deltaZ = Math.Pow((double)distanceZ, (double)distanceZ);
+
+            var overallMovement = Math.Sqrt(deltaX + deltaY + deltaZ);
+            return overallMovement;
+        }
+
         public async Task AddShieldUpgradeAsync(string commandCode, IShieldUpgrades upgrade)
         {
             var ship = await GetShipAsync(commandCode);
@@ -110,10 +123,16 @@ namespace DeepSpace.Core
             UpdateHealth(ship, DeepSpaceConstants.BASE_SHIELD_HEALTH);
         }
 
-        public async Task ReceiveDamageAsync(string commandCode, double damage)
+        public async Task AttackShipAsync(string commandCode, string transponderCode)
         {
-            var ship =  await GetShipAsync(commandCode);
-            UpdateHealth(ship, -damage);
+            var attackingShip =  await GetShipAsync(commandCode); // get the attacking ship
+            var defendingShip = this.ShipDataAccess.GetShipByTransponderCode(transponderCode); // and the defending ship
+            if (this.UpdateMovements(defendingShip)) // if the defender's position has changed then update it
+            {
+                await this.ShipDataAccess.UpsertShipAsync(defendingShip);
+            }
+
+            UpdateHealth(defendingShip, -attackingShip.Statistics.FirePower); // reduce the defending ship's health by the firepower of the main ship
         }
 
         public async Task RepairAsync(string commandCode)
@@ -128,10 +147,23 @@ namespace DeepSpace.Core
             UpdateHealth(ship, ship.Statistics.BaseHealth + ship.Shield);
         }
 
-        private void UpdateHealth(Ship ship, double healthChange)
+        private void UpdateHealth(Ship ship, int healthChange)
         {
             ship.Statistics.CurrentHealth += healthChange;
             Console.WriteLine($"{ship.Name} Health {healthChange}");
+            if(ship.Statistics.CurrentHealth <= 0) // if it's dead
+            {
+                this.KillShip(); // then kill it
+            }
+            else
+            {
+                this.ShipDataAccess.UpsertShipAsync(ship); // otherwise update them with the new health
+            }
+        }
+
+        private void KillShip()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Ship>> ScanAsync(string commandCode)

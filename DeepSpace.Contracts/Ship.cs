@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using DeepSpace.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +16,7 @@ namespace DeepSpace.Contracts
         public string CommandCode { get; set; }
         public string TransponderCode { get; set; }
         
-        public double Shield => ShieldUpgrades.Sum(su => su.ShieldValue);
+        public int Shield => ShieldUpgrades.Sum(su => su.ShieldValue);
         public List<IShieldUpgrades> ShieldUpgrades { get; set; }        
 
         public Location Location { get; set; }
