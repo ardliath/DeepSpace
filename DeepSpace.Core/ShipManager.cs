@@ -66,10 +66,7 @@ namespace DeepSpace.Core
 
             var destination = new Location { X = x, Y = y, Z = z };
 
-            var speed = ship.Statistics.Speed;
-
-            // FYI: https://math.stackexchange.com/a/42643
-
+            var speed = ship.Statistics.Speed;            
             double overallMovement = GetDistance(ship.Location, destination);
 
             // Then simple Time = Distance / Speed calc. We're going to round because you're using TimeSpan.
@@ -95,6 +92,7 @@ namespace DeepSpace.Core
 
         public  double GetDistance(Location firstLocation, Location secondLocation)
         {
+            // FYI: https://math.stackexchange.com/a/42643
             var distanceX = Math.Abs(firstLocation.X - secondLocation.X);
             var distanceY = Math.Abs(firstLocation.Y - secondLocation.Y);
             var distanceZ = Math.Abs(firstLocation.Z - secondLocation.Z);
