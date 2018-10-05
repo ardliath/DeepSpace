@@ -36,7 +36,9 @@ namespace DeepSpace.Core
                 Statistics = new Statistics
                 {
                     Speed = 1,
-                    ScanRange = 1
+                    ScanRange = 1,
+                    BaseHealth = DeepSpaceConstants.BASE_HEALTH,
+                    CurrentHealth = DeepSpaceConstants.BASE_HEALTH
                 }
             };
 
@@ -123,12 +125,12 @@ namespace DeepSpace.Core
         public async Task RestoreAsync(string commandCode)
         {
             var ship = await GetShipAsync(commandCode);
-            UpdateHealth(ship, ship.BaseHealth + ship.Shield);
+            UpdateHealth(ship, ship.Statistics.BaseHealth + ship.Shield);
         }
 
         private void UpdateHealth(Ship ship, double healthChange)
         {
-            ship.CurrentHealth += healthChange;
+            ship.Statistics.CurrentHealth += healthChange;
             Console.WriteLine($"{ship.Name} Health {healthChange}");
         }
 

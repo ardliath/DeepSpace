@@ -4,5 +4,9 @@
     {
         public int Speed { get; set; }
         public int ScanRange { get; set; }
+
+        public double BaseHealth { get; set; }
+
+        public double CurrentHealth { get; set; }
     }
 }
