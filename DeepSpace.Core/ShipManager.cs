@@ -70,15 +70,7 @@ namespace DeepSpace.Core
 
             // FYI: https://math.stackexchange.com/a/42643
 
-            var distanceX = Math.Abs(ship.Location.X - destination.X);
-            var distanceY = Math.Abs(ship.Location.Y - destination.Y);
-            var distanceZ = Math.Abs(ship.Location.Z - destination.Z);
-
-            var deltaX = Math.Pow((double)distanceX, (double)distanceX);
-            var deltaY = Math.Pow((double)distanceY, (double)distanceY);
-            var deltaZ = Math.Pow((double)distanceZ, (double)distanceZ);
-
-            var overallMovement = Math.Sqrt(deltaX + deltaY + deltaZ);
+            double overallMovement = GetDistance(ship.Location, destination);
 
             // Then simple Time = Distance / Speed calc. We're going to round because you're using TimeSpan.
             var timeToMove = Convert.ToInt32(Math.Round((overallMovement / speed), 0, MidpointRounding.AwayFromZero));
@@ -100,7 +92,21 @@ namespace DeepSpace.Core
 
             return move;
         }
-        
+
+        public  double GetDistance(Location firstLocation, Location secondLocation)
+        {
+            var distanceX = Math.Abs(firstLocation.X - secondLocation.X);
+            var distanceY = Math.Abs(firstLocation.Y - secondLocation.Y);
+            var distanceZ = Math.Abs(firstLocation.Z - secondLocation.Z);
+
+            var deltaX = Math.Pow((double)distanceX, (double)distanceX);
+            var deltaY = Math.Pow((double)distanceY, (double)distanceY);
+            var deltaZ = Math.Pow((double)distanceZ, (double)distanceZ);
+
+            var overallMovement = Math.Sqrt(deltaX + deltaY + deltaZ);
+            return overallMovement;
+        }
+
         public async Task AddShieldUpgradeAsync(string commandCode, IShieldUpgrades upgrade)
         {
             var ship = await GetShipAsync(commandCode);
