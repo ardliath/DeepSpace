@@ -106,13 +106,9 @@ namespace DeepSpace.Controllers
             return response;
         }
 
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
+        async Task AttackShip(string commandCode, string transponderCode)
 
-        [HttpPut]
+        [HttpPost]
         [ActionName("Repair/hull")]
         public async Task<string>  Repair([FromBody] RepairShipRequest value)
         {
@@ -120,7 +116,7 @@ namespace DeepSpace.Controllers
             return "Ship repaired";
         }
 
-        [HttpPut]
+        [HttpPost]
         [ActionName("Repair/shield")]
         public async Task<string> Repair([FromBody] RestoreShipRequest value)
         {
