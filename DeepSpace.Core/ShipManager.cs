@@ -20,19 +20,13 @@ namespace DeepSpace.Core
 
         public async Task<Ship> CreateShipAsync(string name)
         {
-            var random = new Random();
-
+            var startLocation = DetermineStartLocation();
             var ship = new Ship
             {
                 Name = name,
                 CommandCode = Guid.NewGuid().ToString(),
                 TransponderCode = Guid.NewGuid().ToString(),
-                Location = new Location
-                {
-                    X = random.Next(),
-                    Y = random.Next(),
-                    Z = random.Next()
-                },
+                Location = startLocation,
                 Statistics = new Statistics
                 {
                     Speed = 1,
@@ -45,6 +39,17 @@ namespace DeepSpace.Core
 
             await this.ShipDataAccess.InsertShipAsync(ship);
             return ship;
+        }
+
+        private Location DetermineStartLocation()
+        {
+            var random = new Random();
+            return new Location
+            {
+                X = random.Next(),
+                Y = random.Next(),
+                Z = random.Next()
+            };
         }
 
         public async Task<Ship> GetShipAsync(string commandCode)
