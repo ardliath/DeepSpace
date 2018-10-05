@@ -18,8 +18,7 @@ namespace DeepSpace.Contracts
         public string TransponderCode { get; set; }
         
         public double Shield => ShieldUpgrades.Sum(su => su.ShieldValue);
-        public List<IShieldUpgrades> ShieldUpgrades { get; set; }
-        public double CurrentHealth { get; set; }
+        public List<IShieldUpgrades> ShieldUpgrades { get; set; }        
 
         public Location Location { get; set; }
         public Move Move { get; set; }

@@ -37,7 +37,8 @@ namespace DeepSpace.Core
                 {
                     Speed = 1,
                     ScanRange = 1,
-                    BaseHealth = DeepSpaceConstants.BASE_HEALTH
+                    BaseHealth = DeepSpaceConstants.BASE_HEALTH,
+                    CurrentHealth = DeepSpaceConstants.BASE_HEALTH
                 }
             };
 
@@ -129,7 +130,7 @@ namespace DeepSpace.Core
 
         private void UpdateHealth(Ship ship, double healthChange)
         {
-            ship.CurrentHealth += healthChange;
+            ship.Statistics.CurrentHealth += healthChange;
             Console.WriteLine($"{ship.Name} Health {healthChange}");
         }
 
