@@ -38,7 +38,8 @@ namespace DeepSpace.Core
                     Speed = 1,
                     ScanRange = 1,
                     BaseHealth = DeepSpaceConstants.BASE_HEALTH,
-                    CurrentHealth = DeepSpaceConstants.BASE_HEALTH
+                    CurrentHealth = DeepSpaceConstants.BASE_HEALTH,
+                    FirePower = DeepSpaceConstants.BASE_FIREPOWER
                 }
             };
 
@@ -114,10 +115,12 @@ namespace DeepSpace.Core
             UpdateHealth(ship, DeepSpaceConstants.BASE_SHIELD_HEALTH);
         }
 
-        public async Task ReceiveDamageAsync(string commandCode, double damage)
+        public async Task AttackShip(string commandCode, string transponderCode)
         {
-            var ship =  await GetShipAsync(commandCode);
-            UpdateHealth(ship, -damage);
+            var attackingShip =  await GetShipAsync(commandCode);
+            var defendingShip = await GetShipAsync(commandCode);
+
+            UpdateHealth(defendingShip, -attackingShip.Statistics.FirePower);
         }
 
         public async Task RepairAsync(string commandCode)
@@ -132,10 +135,19 @@ namespace DeepSpace.Core
             UpdateHealth(ship, ship.Statistics.BaseHealth + ship.Shield);
         }
 
-        private void UpdateHealth(Ship ship, double healthChange)
+        private void UpdateHealth(Ship ship, int healthChange)
         {
             ship.Statistics.CurrentHealth += healthChange;
             Console.WriteLine($"{ship.Name} Health {healthChange}");
+            if(ship.Statistics.CurrentHealth <=0)
+            {
+                this.KillShip();
+            }
+        }
+
+        private void KillShip()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Ship>> ScanAsync(string commandCode)

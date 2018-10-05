@@ -6,8 +6,9 @@ namespace DeepSpace.Core
 {
     public static class DeepSpaceConstants
     {
-        public static double BASE_AMOUNT_HEALTH_PER_REPAIR = 25;
-        public static double BASE_HEALTH = 100;
-        public static double BASE_SHIELD_HEALTH = 50;
+        public static int BASE_AMOUNT_HEALTH_PER_REPAIR = 25;
+        public static int BASE_HEALTH = 100;
+        public static int BASE_SHIELD_HEALTH = 50;
+        public static int BASE_FIREPOWER = 10;
     }
 }
