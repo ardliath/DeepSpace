@@ -5,15 +5,13 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeepSpace", "DeepSpace\DeepSpace.csproj", "{6773BB2A-99F2-4896-92A0-074C16DD81B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{89AC83DE-F1E1-40DB-BF26-C0DAD1A16A1E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeepSpace.Contracts", "DeepSpace.Contracts\DeepSpace.Contracts.csproj", "{124F5785-221B-476F-B7EA-D3966A6A3883}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeepSpace.Core", "DeepSpace.Core\DeepSpace.Core.csproj", "{81D634AE-7D0C-4BEE-A384-15D5E9680EA4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeepSpace.Data", "DeepSpace.Data\DeepSpace.Data.csproj", "{12273E05-4B0A-4BC5-9434-8A097ACC09A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepSpace.Core.Tests", "DeepSpace.Core.Tests\DeepSpace.Core.Tests.csproj", "{7FBAA77B-A20A-4690-99E9-ED1CC0795E1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeepSpace.Core.Tests", "DeepSpace.Core.Tests\DeepSpace.Core.Tests.csproj", "{7FBAA77B-A20A-4690-99E9-ED1CC0795E1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{6773BB2A-99F2-4896-92A0-074C16DD81B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6773BB2A-99F2-4896-92A0-074C16DD81B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6773BB2A-99F2-4896-92A0-074C16DD81B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{89AC83DE-F1E1-40DB-BF26-C0DAD1A16A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{89AC83DE-F1E1-40DB-BF26-C0DAD1A16A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{89AC83DE-F1E1-40DB-BF26-C0DAD1A16A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{89AC83DE-F1E1-40DB-BF26-C0DAD1A16A1E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{124F5785-221B-476F-B7EA-D3966A6A3883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{124F5785-221B-476F-B7EA-D3966A6A3883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{124F5785-221B-476F-B7EA-D3966A6A3883}.Release|Any CPU.ActiveCfg = Release|Any CPU
