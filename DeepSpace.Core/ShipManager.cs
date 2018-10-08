@@ -1,4 +1,4 @@
-﻿using DeepSpace.Contracts;
+using DeepSpace.Contracts;
 using DeepSpace.Data;
 using System;
 using System.Collections.Generic;
@@ -100,19 +100,14 @@ namespace DeepSpace.Core
             return move;
         }
 
-        public  double GetDistance(Location firstLocation, Location secondLocation)
+        public double GetDistance(Location firstLocation, Location secondLocation)
         {
-            // FYI: https://math.stackexchange.com/a/42643
-            var distanceX = Math.Abs(firstLocation.X - secondLocation.X);
-            var distanceY = Math.Abs(firstLocation.Y - secondLocation.Y);
-            var distanceZ = Math.Abs(firstLocation.Z - secondLocation.Z);
+            // Source: https://stackoverflow.com/questions/8914669
+            var deltaX = firstLocation.X - secondLocation.X;
+            var deltaY = firstLocation.Y - secondLocation.Y;
+            var deltaZ = firstLocation.Z - secondLocation.Z;
 
-            var deltaX = Math.Pow((double)distanceX, (double)distanceX);
-            var deltaY = Math.Pow((double)distanceY, (double)distanceY);
-            var deltaZ = Math.Pow((double)distanceZ, (double)distanceZ);
-
-            var overallMovement = Math.Sqrt(deltaX + deltaY + deltaZ);
-            return overallMovement;
+            return Math.Sqrt((double) (deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ));
         }
 
         public async Task AddShieldUpgradeAsync(string commandCode, IShieldUpgrades upgrade)
