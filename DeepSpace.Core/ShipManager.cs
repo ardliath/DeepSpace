@@ -100,7 +100,7 @@ namespace DeepSpace.Core
             return move;
         }
 
-        public double GetDistance(Location firstLocation, Location secondLocation)
+        public static double GetDistance(Location firstLocation, Location secondLocation)
         {
             // Source: https://stackoverflow.com/questions/8914669
             var deltaX = firstLocation.X - secondLocation.X;
