@@ -27,6 +27,7 @@ namespace DeepSpace.Core
                 Name = name,
                 CommandCode = Guid.NewGuid().ToString(),
                 TransponderCode = Guid.NewGuid().ToString(),
+                ShieldUpgrades = new List<IShieldUpgrades>(),
                 Location = new Location
                 {
                     X = random.Next(),
