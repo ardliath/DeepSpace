@@ -1,4 +1,4 @@
-﻿using DeepSpace.Contracts;
+using DeepSpace.Contracts;
 using DeepSpace.Data;
 using System;
 using System.Collections.Generic;
@@ -48,12 +48,7 @@ namespace DeepSpace.Core
             var x = random.Next(100) - 50;
             var y = random.Next(100) - 50;
             var z = random.Next(100) - 50;
-            return new Location
-            {
-                X = x,
-                Y = y,
-                Z = z
-            };
+            return new Location(x, y, z);
         }
 
         public async Task<Ship> GetShipAsync(string commandCode)
