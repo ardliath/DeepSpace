@@ -1,5 +1,4 @@
 using DeepSpace.Contracts;
-using DeepSpace.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,7 +12,7 @@ namespace DeepSpace.Core
     {
         public ShipManager(IShipDataAccess shipDataAccess)
         {
-            this.ShipDataAccess = shipDataAccess;
+            ShipDataAccess = shipDataAccess;
         }
 
         public IShipDataAccess ShipDataAccess { get; }
@@ -38,30 +37,28 @@ namespace DeepSpace.Core
                 }
             };
 
-            await this.ShipDataAccess.InsertShipAsync(ship);
+            await ShipDataAccess.InsertShipAsync(ship);
+            
             return ship;
         }
 
         private Location DetermineStartLocation()
         {
             var random = new Random();
-            var x = random.Next(100) - 50;
-            var y = random.Next(100) - 50;
-            var z = random.Next(100) - 50;
             return new Location
             {
-                X = x,
-                Y = y,
-                Z = z
+                X = random.Next(100) - 50,
+                Y = random.Next(100) - 50,
+                Z = random.Next(100) - 50
             };
         }
 
         public async Task<Ship> GetShipAsync(string commandCode)
         {
-            var ship = this.ShipDataAccess.GetShip(commandCode);
-            if (this.UpdateMovements(ship))
+            var ship = ShipDataAccess.GetShip(commandCode);
+            if (UpdateMovements(ship))
             {
-                await this.ShipDataAccess.UpsertShipAsync(ship);
+                await ShipDataAccess.UpsertShipAsync(ship);
             }
             return await Task.FromResult(ship);
         }
@@ -69,9 +66,9 @@ namespace DeepSpace.Core
         public async Task<Move> MoveAsync(string commandCode, decimal x, decimal y, decimal z)
         {
             var ship = await this.GetShipAsync(commandCode);
-            if (this.UpdateMovements(ship))
+            if (UpdateMovements(ship))
             {
-                await this.ShipDataAccess.UpsertShipAsync(ship);
+                await ShipDataAccess.UpsertShipAsync(ship);
             }
 
             var destination = new Location { X = x, Y = y, Z = z };
@@ -95,7 +92,7 @@ namespace DeepSpace.Core
             };
             ship.Location = null;
             ship.Move = move;
-            await this.ShipDataAccess.UpsertShipAsync(ship);
+            await ShipDataAccess.UpsertShipAsync(ship);
 
             return move;
         }
@@ -122,10 +119,10 @@ namespace DeepSpace.Core
         public async Task AttackShipAsync(string commandCode, string transponderCode)
         {
             var attackingShip =  await GetShipAsync(commandCode); // get the attacking ship
-            var defendingShip = this.ShipDataAccess.GetShipByTransponderCode(transponderCode); // and the defending ship
-            if (this.UpdateMovements(defendingShip)) // if the defender's position has changed then update it
+            var defendingShip = ShipDataAccess.GetShipByTransponderCode(transponderCode); // and the defending ship
+            if (UpdateMovements(defendingShip)) // if the defender's position has changed then update it
             {
-                await this.ShipDataAccess.UpsertShipAsync(defendingShip);
+                await ShipDataAccess.UpsertShipAsync(defendingShip);
             }
 
             UpdateHealth(defendingShip, -attackingShip.Statistics.FirePower); // reduce the defending ship's health by the firepower of the main ship
@@ -149,11 +146,11 @@ namespace DeepSpace.Core
             Console.WriteLine($"{ship.Name} Health {healthChange}");
             if(ship.Statistics.CurrentHealth <= 0) // if it's dead
             {
-                this.KillShip(); // then kill it
+                KillShip();
             }
             else
             {
-                this.ShipDataAccess.UpsertShipAsync(ship); // otherwise update them with the new health
+                ShipDataAccess.UpsertShipAsync(ship); // otherwise update them with the new health
             }
         }
 
@@ -164,12 +161,12 @@ namespace DeepSpace.Core
 
         public async Task<IEnumerable<Ship>> ScanAsync(string commandCode)
         {
-            var ship = this.ShipDataAccess.GetShip(commandCode);
-            if(this.UpdateMovements(ship))
+            var ship = ShipDataAccess.GetShip(commandCode);
+            if(UpdateMovements(ship))
             {
-                await this.ShipDataAccess.UpsertShipAsync(ship);
+                await ShipDataAccess.UpsertShipAsync(ship);
             }
-            var nearbyShips = this.ShipDataAccess.ScanForShips(ship.CommandCode, ship.Location, ship.Statistics.ScanRange);
+            var nearbyShips = ShipDataAccess.ScanForShips(ship.CommandCode, ship.Location, ship.Statistics.ScanRange);
             return nearbyShips;
         }
 
