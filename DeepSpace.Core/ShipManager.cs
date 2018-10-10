@@ -68,10 +68,14 @@ namespace DeepSpace.Core
 
         public async Task<Move> MoveAsync(string commandCode, decimal x, decimal y, decimal z)
         {
-            var ship = await this.GetShipAsync(commandCode);
+            var ship = await this.GetShipAsync(commandCode);            
             if (this.UpdateMovements(ship))
             {
                 await this.ShipDataAccess.UpsertShipAsync(ship);
+            }
+            if (ship.Location == null) // if the ship is already in flight then return their current move
+            {
+                return ship.Move;
             }
 
             var destination = new Location { X = x, Y = y, Z = z };
@@ -165,10 +169,15 @@ namespace DeepSpace.Core
         public async Task<IEnumerable<Ship>> ScanAsync(string commandCode)
         {
             var ship = this.ShipDataAccess.GetShip(commandCode);
-            if(this.UpdateMovements(ship))
+            if (this.UpdateMovements(ship))
             {
                 await this.ShipDataAccess.UpsertShipAsync(ship);
             }
+            if (ship.Location == null)
+            {
+                return new Ship[] { }; // cannot scan while in flight
+            }
+
             var nearbyShips = this.ShipDataAccess.ScanForShips(ship.CommandCode, ship.Location, ship.Statistics.ScanRange);
             return nearbyShips;
         }
