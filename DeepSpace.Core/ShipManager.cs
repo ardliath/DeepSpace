@@ -63,10 +63,14 @@ namespace DeepSpace.Core
 
         public async Task<Move> MoveAsync(string commandCode, decimal x, decimal y, decimal z)
         {
-            var ship = await this.GetShipAsync(commandCode);
+            var ship = await this.GetShipAsync(commandCode);            
             if (this.UpdateMovements(ship))
             {
                 await this.ShipDataAccess.UpsertShipAsync(ship);
+            }
+            if (ship.Location == null) // if the ship is already in flight then return their current move
+            {
+                return ship.Move;
             }
 
             var destination = new Location { X = x, Y = y, Z = z };
@@ -95,19 +99,14 @@ namespace DeepSpace.Core
             return move;
         }
 
-        public  double GetDistance(Location firstLocation, Location secondLocation)
+        public static double GetDistance(Location firstLocation, Location secondLocation)
         {
-            // FYI: https://math.stackexchange.com/a/42643
-            var distanceX = Math.Abs(firstLocation.X - secondLocation.X);
-            var distanceY = Math.Abs(firstLocation.Y - secondLocation.Y);
-            var distanceZ = Math.Abs(firstLocation.Z - secondLocation.Z);
+            // Source: https://stackoverflow.com/questions/8914669
+            var deltaX = firstLocation.X - secondLocation.X;
+            var deltaY = firstLocation.Y - secondLocation.Y;
+            var deltaZ = firstLocation.Z - secondLocation.Z;
 
-            var deltaX = Math.Pow((double)distanceX, (double)distanceX);
-            var deltaY = Math.Pow((double)distanceY, (double)distanceY);
-            var deltaZ = Math.Pow((double)distanceZ, (double)distanceZ);
-
-            var overallMovement = Math.Sqrt(deltaX + deltaY + deltaZ);
-            return overallMovement;
+            return Math.Sqrt((double) (deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ));
         }
 
         public async Task AddShieldUpgradeAsync(string commandCode, IShieldUpgrades upgrade)
@@ -165,10 +164,15 @@ namespace DeepSpace.Core
         public async Task<IEnumerable<Ship>> ScanAsync(string commandCode)
         {
             var ship = this.ShipDataAccess.GetShip(commandCode);
-            if(this.UpdateMovements(ship))
+            if (this.UpdateMovements(ship))
             {
                 await this.ShipDataAccess.UpsertShipAsync(ship);
             }
+            if (ship.Location == null)
+            {
+                return new Ship[] { }; // cannot scan while in flight
+            }
+
             var nearbyShips = this.ShipDataAccess.ScanForShips(ship.CommandCode, ship.Location, ship.Statistics.ScanRange);
             return nearbyShips;
         }
