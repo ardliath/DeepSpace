@@ -27,7 +27,8 @@ namespace DeepSpace
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IShipManager, ShipManager>()
-                .AddTransient<IShipDataAccess, ShipDataAccess>()
+                //.AddTransient<IShipDataAccess, ShipDataAccess>()       // the data access for using an azure CosmosDB database - this should ALWAYS be configured in trunk
+                .AddTransient<IShipDataAccess, FileBasedDataAccess>()  // a local data access class for local file based data access
                 .AddMvc();            
         }
 
