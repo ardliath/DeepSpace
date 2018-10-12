@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace DeepSpace.Data
 {
@@ -23,22 +24,41 @@ namespace DeepSpace.Data
 
         public Ship GetShip(string commandCode)
         {
-            throw new NotImplementedException();
+            return GetShipFromDisc(commandCode);
         }
 
         public Ship GetShipByTransponderCode(string transponderCode)
         {
-            throw new NotImplementedException();
+            return this.ListAllShips().SingleOrDefault(s => s.TransponderCode.Equals(transponderCode));
         }
 
         public Task<Ship> InsertShipAsync(Ship ship)
         {
-            throw new NotImplementedException();
+            return UpsertShipAsync(ship);
         }
 
         public IEnumerable<Ship> ScanForShips(string commandCode, Location location, int scanRange)
         {
-            throw new NotImplementedException();
+            // this is a clone of the real method in cosmos data access, less than ideal!
+
+            decimal minX = location.X - scanRange;
+            decimal maxX = location.X + scanRange;
+            decimal minY = location.Y - scanRange;
+            decimal maxY = location.Y + scanRange;
+            decimal minZ = location.Z - scanRange;
+            decimal maxZ = location.Z + scanRange;
+
+            return this.ListAllShips()
+                .Where(s => s.CommandCode != commandCode // don't scan yourself!
+                    && s.Location != null // and they're not moving
+                    && s.Location.X >= minX
+                    && s.Location.X <= maxX
+                    && s.Location.Y >= minY
+                    && s.Location.Y <= maxY
+                    && s.Location.Z >= minZ
+                    && s.Location.Z <= maxZ)
+                .AsEnumerable<Ship>()
+                .ToList();
         }
 
         public async Task<Ship> UpsertShipAsync(Ship ship)
@@ -53,23 +73,45 @@ namespace DeepSpace.Data
 
         private string GetShipFilename(Ship ship)
         {
-            throw new NotImplementedException();
+            return this.GetShipFilename(ship.CommandCode);
+        }
+
+        private string GetShipFilename(string commandCode)
+        {
+            var filename = $"{commandCode}.json";
+            return Path.Combine(GetFolder().FullName, filename);
         }
 
         private DirectoryInfo GetFolder()
         {
-            var folder = this.Configuration.GetSection("StorageFolder").Value;
+            var folder = this.Configuration.GetSection("StorageFolder")?.Value;
+            if(folder == null)
+            {
+                throw new InvalidOperationException("To use the FileBasedDataAccess class you must have an AppSetting 'StorageFolder' configured with the folder path to use");
+            }
             return new DirectoryInfo(folder);
         }
 
         private IEnumerable<Ship> ListAllShips()
-        {
-            throw new NotImplementedException();
+        {            
+            var files = this.GetFolder().GetFiles("*.json");
+            return files.Select(f =>
+            {
+                var data = File.ReadAllText(f.FullName);
+                return DeserialiseShip(data);
+            });
         }
 
-        private Ship GetShip(string commandCode)
+        private Ship GetShipFromDisc(string commandCode)
         {
-            throw new NotImplementedException();
+            var path = this.GetShipFilename(commandCode);
+            var data = File.ReadAllText(path);
+            return DeserialiseShip(data);
+        }
+
+        private Ship DeserialiseShip(string data)
+        {
+            return JsonConvert.DeserializeObject<Ship>(data);
         }
     }
 }
