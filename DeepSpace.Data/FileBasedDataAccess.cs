@@ -1,5 +1,6 @@
 ﻿using DeepSpace.Contracts;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,7 +41,17 @@ namespace DeepSpace.Data
             throw new NotImplementedException();
         }
 
-        public Task<Ship> UpsertShipAsync(Ship ship)
+        public async Task<Ship> UpsertShipAsync(Ship ship)
+        {
+            if(ship.ID == null) ship.ID = Guid.NewGuid().ToString();
+
+            var data = JsonConvert.SerializeObject(ship);
+            var path = GetShipFilename(ship);
+            File.WriteAllText(path, data);
+            return ship;
+        }
+
+        private string GetShipFilename(Ship ship)
         {
             throw new NotImplementedException();
         }
@@ -49,6 +60,16 @@ namespace DeepSpace.Data
         {
             var folder = this.Configuration.GetSection("StorageFolder").Value;
             return new DirectoryInfo(folder);
+        }
+
+        private IEnumerable<Ship> ListAllShips()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Ship GetShip(string commandCode)
+        {
+            throw new NotImplementedException();
         }
     }
 }
