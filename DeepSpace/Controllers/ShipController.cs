@@ -110,8 +110,12 @@ namespace DeepSpace.Controllers
         [ActionName("Attack")]
         public async Task<string> Attack([FromBody] AttackShipRequest value)
         {
+            var shipsInRange = await this.ShipManager.ScanAsync(value.CommandCode);
+            var defendingShip = await this.ShipManager.GetShipAsync(value.TransponderCode);            
+            if (!shipsInRange.Contains(defendingShip)) return "Attack failed. Ship out of range.";
             await this.ShipManager.AttackShipAsync(value.CommandCode, value.TransponderCode);
             return "Attack Complete";
+
         }        
 
         [HttpPost]
